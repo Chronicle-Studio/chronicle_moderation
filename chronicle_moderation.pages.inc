@@ -11,12 +11,15 @@
 function chronicle_moderation_page() {
   $build = array();
 
-  static $states;
-  if (!isset($states)) {
-    $states = array();
-    foreach (workflow_get_workflow_states() as $state) {
-      $states[$state->sid] = $state->state;
-    }
+  if (!$transitions = variable_get('chronicle_moderation_transitions', FALSE)) {
+    return array(
+      '#markup' => t('There are no workflow transitions configured.')
+    );
+  }
+
+  $states = array();
+  foreach (workflow_get_workflow_states() as $state) {
+    $states[$state->sid] = $state->state;
   }
 
   $sql = 'SELECT n.nid AS nid,
@@ -36,12 +39,6 @@ function chronicle_moderation_page() {
     WHERE wn.sid = :current_state
     ORDER BY transition_stamp ASC
   ';
-
-  if (!$transitions = variable_get('chronicle_moderation_transitions', FALSE)) {
-    return array(
-      '#markup' => t('There are no workflow transitions configured.')
-    );
-  }
 
   foreach ($transitions as $key => $title) {
     $result = db_query($sql, array(':current_state' => $key));
