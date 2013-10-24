@@ -73,5 +73,11 @@ function chronicle_moderation_page() {
     }
   }
 
+  if (empty($build)) {
+    return array(
+      '#markup' => '<p>' . t('There is no content awaiting moderation at this time.'),
+    );
+  }
+
   return $build;
 }
