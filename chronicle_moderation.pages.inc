@@ -51,21 +51,26 @@ function chronicle_moderation_page() {
     $rows = array();
     $header = array();
     foreach ($result as $item) {
+      $node = node_load($item->nid);
+      if (!node_access('update', $node)) continue;
+
       $item->current_state = $states[$item->current_state];
       $item->old_state = $states[$item->old_state];
       $rows[] = (array) $item;
     }
     $header = array_keys((array)$item);
 
-    $build[$key] = array(
-      '#prefix' => '<h2>' . $title . '</h2>',
-      '#suffix' => '<br />',
-      'list' => array(
-        '#theme' => 'table',
-        '#header' => $header,
-        '#rows' => $rows,
-      ),
-    );
+    if (!empty($rows)) {
+      $build[$key] = array(
+        '#prefix' => '<h2>' . $title . '</h2>',
+        '#suffix' => '<br />',
+        'list' => array(
+          '#theme' => 'table',
+          '#header' => $header,
+          '#rows' => $rows,
+        ),
+      );
+    }
   }
 
   return $build;
