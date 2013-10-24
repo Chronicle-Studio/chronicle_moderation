@@ -1,0 +1,8 @@
+name = Chronicle Moderation
+description = Moderation workflow for content administrators.
+core = 7.x
+package = C>
+
+dependencies[] = revisioning
+dependencies[] = rules
+dependencies[] = workflow
