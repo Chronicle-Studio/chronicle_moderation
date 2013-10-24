@@ -5,3 +5,31 @@
  * Provides workflow moderation interface.
  */
 
+/**
+ * Implements hook_menu().
+ */
+function chronicle_moderation_menu() {
+  $items['admin/content/moderation'] = array(
+    'title' => 'Content moderation',
+    'page callback' => 'chronicle_moderation_page',
+    'access arguments' => array('access moderation dashboard'),
+    'file' => 'chronicle_moderation.pages.inc',
+  );
+  $items['admin/content/moderation/dashboard'] = array(
+    'title' => 'Dashboard',
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+  );
+
+  return $items;
+}
+
+/**
+ * Implements hook_permission().
+ */
+function chronicle_moderation_permission() {
+  return array(
+    'access moderation dashboard' =>  array(
+      'title' => t('Accesss moderation dashboard'),
+    ),
+  );
+}
