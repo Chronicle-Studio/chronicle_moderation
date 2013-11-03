@@ -33,3 +33,14 @@ function chronicle_moderation_permission() {
     ),
   );
 }
+
+/**
+ * Implements hook_node_update().
+ */
+function chronicle_moderation_node_update($node) {
+  if (isset($node->revision)) {
+    if (module_exists('rules')) {
+      rules_invoke_event('node_newrevision', $node);
+    }
+  }
+}
